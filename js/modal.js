@@ -1,10 +1,14 @@
+/**
+ * Fonction qui gère la barre de navigation en responsive
+ */
+
 function editNav() {
-	var x = document.getElementById("myTopnav");
-	if (x.className === "topnav") {
-		x.className += " responsive";
-	} else {
-		x.className = "topnav";
-	}
+    var x = document.getElementById("myTopnav");
+    if (x.className === "topnav") {
+        x.className += " responsive";
+    } else {
+        x.className = "topnav";
+    }
 }
 
 // DOM Elements
@@ -18,13 +22,14 @@ modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
 
 // launch modal form
 function launchModal() {
-	modalbg.style.display = "block";
+    modalbg.style.display = "block";
 }
 
 // Close modal event
 modalCross.forEach((btn) => btn.addEventListener("click", closeModal));
+
 // Close modal form
 function closeModal() {
-	modalbg.style.display = "none";
+    modalbg.style.display = "none";
 }
 

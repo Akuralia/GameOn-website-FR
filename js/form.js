@@ -24,11 +24,7 @@ const lastNameElement = document.getElementById("last");
 const emailElement = document.getElementById("email");
 const birthdateElement = document.getElementById("birthdate");
 const tournamentsElement = document.getElementById("quantity");
-const locationOneElement = document.getElementById("location1");
-const locationTwoElement = document.getElementById("location2");
-const locationThreeElement = document.getElementById("location3");
-const locationFourElement = document.getElementById("location4");
-const locationFiveElement = document.getElementById("location5");
+const locationsElement = document.querySelectorAll('input[type="radio"]');
 const cguElement = document.getElementById("checkbox1");
 const submitButton = document.getElementById("btn-submit");
 
@@ -53,31 +49,20 @@ tournamentsElement.addEventListener("keyup", function () {
 	formVerification.tournaments = validateTournaments(this);
 	submitButtonState();
 });
-locationOneElement.addEventListener("change", function () {
-	formVerification.location = validateLocation(this);
-	submitButtonState();
-});
-locationTwoElement.addEventListener("change", function () {
-	formVerification.location = validateLocation(this);
-	submitButtonState();
-});
-locationThreeElement.addEventListener("change", function () {
-	formVerification.location = validateLocation(this);
-	submitButtonState();
-});
-locationFourElement.addEventListener("change", function () {
-	formVerification.location = validateLocation(this);
-	submitButtonState();
-});
-locationFiveElement.addEventListener("change", function () {
-	formVerification.location = validateLocation(this);
-	submitButtonState();
-});
+
 cguElement.addEventListener("change", function () {
 	formVerification.CGU = validateCGU(this);
 	submitButtonState();
 });
 
+locationsElement.addEventListener("focus", function () {
+	formVerification.location = validateLocation(this);
+	submitButtonState();
+});
+
+for(i = 0; i < locationsElement.length; i++){
+	locationsElement[i].addEventListener('click', validateLocation)
+}
 // Function to enable or disabled the submit button
 
 function submitButtonState() {
@@ -87,7 +72,7 @@ function submitButtonState() {
 		submitButton.disabled = false;
 		return isFormValid;
 	} else {
-		// submitButton.disabled = true;
+		submitButton.disabled = true;
 		return isFormValid;
 	}
 }
@@ -95,29 +80,42 @@ function submitButtonState() {
 // Functions to verify all the inputs
 
 function validateFirstName(element) {
+	const errorMessageElement = document.querySelector("#error-first");
 	if (firstNameRegex.test(element.value)) {
+		errorMessageElement.textContent = "";
 		return true;
 	} else {
+		const errorMessage = errorMessageElement.dataset.errorMessage;
+		errorMessageElement.textContent = errorMessage;
 		return false;
 	}
 }
 
 function validateLastName(element) {
+	const errorMessageElement = document.querySelector("#error-last");
 	if (lastNameRegex.test(element.value)) {
+		errorMessageElement.textContent = "";
 		return true;
 	} else {
+		const errorMessage = errorMessageElement.dataset.errorMessage;
+		errorMessageElement.textContent = errorMessage;
 		return false;
 	}
 }
 function validateEmail(element) {
+	const errorMessageElement = document.querySelector("#error-email");
 	if (emailRegex.test(element.value)) {
+		errorMessageElement.textContent = "";
 		return true;
 	} else {
+		const errorMessage = errorMessageElement.dataset.errorMessage;
+		errorMessageElement.textContent = errorMessage;
 		return false;
 	}
 }
 
 function validateBirthdate(element) {
+	const errorMessageElement = document.querySelector("#error-birth");
 	const currentDate = new Date();
 	const birthdate = new Date(element.value);
 
@@ -132,53 +130,62 @@ function validateBirthdate(element) {
 	const isPersonBorn = date2 !== date1;
 
 	if (birthdate.getTime() < currentDate.getTime() && isPersonBorn) {
+		errorMessageElement.textContent = "";
 		return true;
 	} else {
+		const errorMessage = errorMessageElement.dataset.errorMessage;
+		errorMessageElement.textContent = errorMessage;
 		return false;
 	}
 }
 
 function validateTournaments(element) {
+	const errorMessageElement = document.querySelector("#error-tournaments");
 	if (tournamentsRegex.test(element.value) && element.value >= 0) {
+		errorMessageElement.textContent = "";
 		return true;
 	} else {
+		const errorMessage = errorMessageElement.dataset.errorMessage;
+		errorMessageElement.textContent = errorMessage;
 		return false;
 	}
 }
 
 function validateLocation(element) {
-	if (locationOneElement.value) {
-		return true;
-	} else if (locationTwoElement.value) {
-		return true;
-	} else if (locationThreeElement.value) {
-		return true;
-	} else if (locationFourElement.value) {
-		return true;
-	} else if (locationFiveElement.value) {
-		return true;
-	} else {
-		return false;
+	const errorMessageElement = document.querySelector("#error-location");
+	const casesCochees = document.querySelectorAll('input[type="radio"]');
+
+	let isCheckboxChecked = false;
+
+	for (var i = 0; i < casesCochees.length; i++){
+
+		const casesCochee = casesCochees[i];
+
+		if (casesCochee.checked){
+			isCheckboxChecked = true;
+			break
+		}
 	}
+	return isCheckboxChecked;
 }
 
 function validateCGU(element) {
+	const errorMessageElement = document.querySelector("#error-checkbox1");
 	if (element.checked) {
 		return true;
 	} else {
+		const errorMessage = errorMessageElement.dataset.errorMessage;
+		errorMessageElement.textContent = errorMessage;
 		return false;
 	}
 }
 
 // Gestion du comportement de la modal en fonction de la validité du formulaire
 submitButton.addEventListener("click", (e) => {
-	const errorMessageElement = document.querySelector(".error-msg");
+
 	const formValidity = submitButtonState();
 	if (!formValidity) {
 		e.preventDefault();
-		const errorMessage = errorMessageElement.dataset.errorMessage;
-		errorMessageElement.textContent = errorMessage;
-		console.log(formVerification);
 		console.log("formulaire invalide");
 	} else {
 		console.log("formulaire valide");
