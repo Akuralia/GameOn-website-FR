@@ -31,6 +31,7 @@ const formElement = document.getElementById("reserve");
 const modalElement = document.querySelector(".modal-body");
 const modalConfirmElement = document.querySelector(".modal-confirm");
 
+
 /**
  * Fonction qui vérifie si le prénom est valide
  */
@@ -181,7 +182,6 @@ function validateLocation() {
         errorMsg.style.display = "none";
         return (formVerification.location = isOneRadioChecked);
     } else {
-        console.log("Veuillez choisir une ville");
         errorMsg.style.display = "block";
         errorMsg.textContent = "Veuillez choisir une ville";
         return (formVerification.location = isOneRadioChecked);
@@ -221,9 +221,7 @@ submitButton.addEventListener("click", (e) => {
         e.preventDefault();
         formElement.style.display = "none";
         modalConfirmElement.style.display = "flex";
-        console.log("formulaire valide");
     } else {
         e.preventDefault();
-        console.log("formulaire non valide");
     }
 });
